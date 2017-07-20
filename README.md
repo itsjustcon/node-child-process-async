@@ -1,14 +1,10 @@
 # child-process-async
 The best way to override Node's [`child_process`](https://nodejs.org/api/child_process.html) module w/ Promises
 
-> How is this different than `util.promisify(require('child_process').exec)`?
-
-[`util.promisify()`](https://nodejs.org/api/util.html#util_util_promisify_original)
-*(v8.0.0+)* is a great addition to Node core but `child-process-async` provides
-a **drop-in replacement** for the original `child_process` functions, not just
-duplicate methods that return a Promise. So when you call `exec(...)` we still
-return a `ChildProcess` instance, just with `.then()` and `.catch()` added to it
-to make it promise-friendly.
+`child-process-async` provides a **drop-in replacement** for the original
+`child_process` functions, not just duplicate methods that return a Promise.
+So when you call `exec(...)` we still return a `ChildProcess` instance, just
+with `.then()` and `.catch()` added to it to make it promise-friendly.
 
 ## Install
 ```shell
@@ -29,9 +25,12 @@ const { exec, spawn } = require('child-process-async');
 async function() {
   const { stdout, stderr } = await exec('ls -al');
   // OR:
-  const child = await exec('ls -al');
+  const child = await exec('ls -al', {});
   // do whatever you want with `child` here - it's a ChildProcess instance just
   // with promise-friendly `.then()` & `.catch()` functions added to it!
+  child.stdin.write(...);
+  child.stdout.pipe(...);
+  child.stderr.on('data', (data) => ...);
   const { stdout, stderr } = await child;
 }
 ```
@@ -41,9 +40,12 @@ async function() {
 async function() {
   const { stdout, stderr, exitCode } = await spawn('ls', [ '-al' ]);
   // OR:
-  const child = spawn('ls', [ '-al' ]);
+  const child = spawn('ls', [ '-al' ], {});
   // do whatever you want with `child` here - it's a ChildProcess instance just
   // with promise-friendly `.then()` & `.catch()` functions added to it!
+  child.stdin.write(...);
+  child.stdout.pipe(...);
+  child.stderr.on('data', (data) => ...);
   const { stdout, stderr, exitCode } = await child;
 }
 ```

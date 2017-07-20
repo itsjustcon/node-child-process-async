@@ -1,6 +1,6 @@
 {
   "name": "child-process-async",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "The best way to override Node's child_process module w/ Promises",
   "main": "child-process-async.js",
   "scripts": {

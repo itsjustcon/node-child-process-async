@@ -15,8 +15,8 @@ function exec(command, options) /*: ChildProcess & Promise<{ stdout:Buffer|strin
         );
     });
     Object.defineProperties(proc, {
-        then: { value: _promise.then },
-        catch: { value: _promise.catch },
+        then: { value: _promise.then.bind(_promise) },
+        catch: { value: _promise.catch.bind(_promise) },
     });
     return proc;
 }
@@ -36,8 +36,8 @@ function spawn(command, args, options) /*: ChildProcess & Promise<{ stdout:Buffe
         proc.on('close', (exitCode) => resolve({ stdout, stderr, exitCode }));
     });
     Object.defineProperties(proc, {
-        then: { value: _promise.then },
-        catch: { value: _promise.catch },
+        then: { value: _promise.then.bind(_promise) },
+        catch: { value: _promise.catch.bind(_promise) },
     });
     return proc;
 }

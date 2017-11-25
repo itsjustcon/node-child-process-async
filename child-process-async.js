@@ -6,6 +6,7 @@
  */
 
 const child_process = require('child_process');
+const ChildProcess = child_process.ChildProcess;
 
 function exec(command, options) /*: ChildProcess & Promise<{ stdout:Buffer|string, stderr:Buffer|string }>*/ {
     let proc;
@@ -14,11 +15,11 @@ function exec(command, options) /*: ChildProcess & Promise<{ stdout:Buffer|strin
             err ? reject(err) : resolve({ stdout, stderr })
         );
     });
-    Object.defineProperties(proc, {
+    Object.defineProperties((proc: any), {
         then: { value: _promise.then.bind(_promise) },
         catch: { value: _promise.catch.bind(_promise) },
     });
-    return proc;
+    return (proc: any);
 }
 
 function spawn(command, args, options) /*: ChildProcess & Promise<{ stdout:Buffer|string|null, stderr:Buffer|string|null, exitCode:number }>*/ {
@@ -27,19 +28,19 @@ function spawn(command, args, options) /*: ChildProcess & Promise<{ stdout:Buffe
         let stdout = (proc.stdout && proc.stdout.readable) ? Buffer.alloc(0) : null,
             stderr = (proc.stderr && proc.stderr.readable) ? Buffer.alloc(0) : null;
         if (Buffer.isBuffer(stdout)) {
-            proc.stdout.on('data', (data) => stdout = Buffer.concat([ stdout, data ]));
+            proc.stdout.on('data', (data) => stdout = Buffer.concat([ (stdout: any), data ]));
         }
         if (Buffer.isBuffer(stderr)) {
-            proc.stderr.on('data', (data) => stderr = Buffer.concat([ stderr, data ]));
+            proc.stderr.on('data', (data) => stderr = Buffer.concat([ (stderr: any), data ]));
         }
         proc.on('error', reject);
         proc.on('close', (exitCode) => resolve({ stdout, stderr, exitCode }));
     });
-    Object.defineProperties(proc, {
+    Object.defineProperties((proc: any), {
         then: { value: _promise.then.bind(_promise) },
         catch: { value: _promise.catch.bind(_promise) },
     });
-    return proc;
+    return (proc: any);
 }
 
 module.exports = Object.assign({}, child_process, { exec, spawn });

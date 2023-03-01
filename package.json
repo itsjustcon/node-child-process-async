@@ -27,6 +27,6 @@
   "devDependencies": {
     "chai": "^4.1.0",
     "flow-bin": "^0.48.0",
-    "mocha": "^3.4.2"
+    "mocha": "^10.2.0"
   }
 }
